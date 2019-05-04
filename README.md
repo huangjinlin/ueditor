@@ -2,13 +2,22 @@ Get Started
 
 改进
 1.针对在request header中增加验证信息,做以下改进:
+
 UE.ajax增加defaultAjaxOptions属性,可以根据其headers属性对,request header赋值(_src\core\ajax.js)
+
 2.针对后端接口,上传本地图片和上传网络图片接口不同意,做以下改进:
+
 config增加,uploadimageUrl,catchimageUrl
+
 3.针对提交图片也需要在header中增加验证信息,做以下改进:
+
 修改_src\plugins\simpleupload.js,用jquery提交表单
+
 4.针对构建dist目录,秀米无法继承,做以下改进:
+
 切换tag为v1.4.3.3并且建立分支v1.4.3.3
+
+tip:提交分支的代码为:git push origin refs/heads/v1.4.3.3
 
 ## ueditor富文本编辑器介绍
 

@@ -23,7 +23,18 @@ UE.ajax = function() {
         }
     }
     var creatAjaxRequest = new Function('return new ' + fnStr);
-
+    //默认参数
+    var defaultAjaxOptions = {
+        method:"POST",
+        timeout:5000,
+        async:true,
+        data:{},//需要传递对象的话只能覆盖
+        headers: {}, //新增属性对request headers添加属性
+        onsuccess:function() {
+        },
+        onerror:function() {
+        }
+    };
 
     /**
      * 将json参数转化成适合ajax提交的参数列表
@@ -52,18 +63,7 @@ UE.ajax = function() {
     function doAjax(url, ajaxOptions) {
         var xhr = creatAjaxRequest(),
         //是否超时
-            timeIsOut = false,
-        //默认参数
-            defaultAjaxOptions = {
-                method:"POST",
-                timeout:5000,
-                async:true,
-                data:{},//需要传递对象的话只能覆盖
-                onsuccess:function() {
-                },
-                onerror:function() {
-                }
-            };
+            timeIsOut = false;
 
         if (typeof url === "object") {
             ajaxOptions = url;
@@ -98,6 +98,9 @@ UE.ajax = function() {
                 }
             }
         };
+        for(var k in defaultAjaxOptions.headers){
+           xhr.setRequestHeader(k, defaultAjaxOptions.headers[k]);
+        }
         if (method == "POST") {
             xhr.setRequestHeader('Content-Type', 'application/x-www-form-urlencoded');
             xhr.send(submitStr);
@@ -255,7 +258,8 @@ UE.ajax = function() {
                 'oncomplete': fn
             };
             doJsonp(url, opts);
-		}
+		},
+        defaultAjaxOptions: defaultAjaxOptions
 	};
 
 

@@ -1509,13 +1509,15 @@
         getActionUrl: function(action){
             var actionName = this.getOpt(action) || action,
                 imageUrl = this.getOpt('imageUrl'),
-                serverUrl = this.getOpt('serverUrl');
+                serverUrl = this.getOpt('serverUrl'),
+                actionUrl = this.getOpt(actionName+"Url");
 
             if(!serverUrl && imageUrl) {
                 serverUrl = imageUrl.replace(/^(.*[\/]).+([\.].+)$/, '$1controller$2');
             }
-
-            if(serverUrl) {
+            if (actionUrl) {
+              return utils.formatUrl(actionUrl);
+          }else if(serverUrl) {
                 serverUrl = serverUrl + (serverUrl.indexOf('?') == -1 ? '?':'&') + 'action=' + (actionName || '');
                 return utils.formatUrl(serverUrl);
             } else {

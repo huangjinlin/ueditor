@@ -112,9 +112,29 @@ UE.plugin.register('simpleupload', function (){
 
                 domUtils.on(iframe, 'load', callback);
                 form.action = utils.formatUrl(imageActionUrl + (imageActionUrl.indexOf('?') == -1 ? '?':'&') + params);
-                form.submit();
+                // form.submit();
+                var data = new FormData(form)
+                var ajaxOptions = {
+                  url: form.action,
+                  type: 'POST',
+                  cache: false,
+                  data: data,
+                  headers: {},
+                  processData: false,
+                  contentType: false
+                }
+                if (UE && UE.ajax && UE.ajax.defaultAjaxOptions) {
+                  for (var k in UE.ajax.defaultAjaxOptions.headers) {
+                    ajaxOptions.headers[k] = UE.ajax.defaultAjaxOptions.headers[k]
+                  }
+                }
+                $.ajax(ajaxOptions).done(function(res) {
+                  // console.log('done.res', res)
+                  callback(res)
+                }).fail(function(res) {
+                  // console.log('fail.res', res)
+                })
             });
-
             var stateTimer;
             me.addListener('selectionchange', function () {
                 clearTimeout(stateTimer);

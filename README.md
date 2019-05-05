@@ -19,6 +19,8 @@ config增加,uploadimageUrl,catchimageUrl
 
 tip:提交分支的代码为:git push origin refs/heads/v1.4.3.3
 
+5.catchremoteimage支持headers设定'Content-Type'='application/json',并且catcherFieldName为undefined时直接传数组给后台
+
 ## ueditor富文本编辑器介绍
 
 UEditor是由百度web前端研发部开发所见即所得富文本web编辑器，具有轻量，可定制，注重用户体验等特点，开源基于MIT协议，允许自由使用和修改代码。

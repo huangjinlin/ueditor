@@ -95,10 +95,19 @@ UE.plugins['catchremoteimage'] = function () {
                     'method': 'POST',
                     'dataType': isJsonp ? 'jsonp':'',
                     'timeout': 60000, //单位：毫秒，回调请求超时设置。目标用户如果网速不是很快的话此处建议设置一个较大的数值
+                    'headers': {
+                        'Content-Type': 'application/json'
+                    },
+                    'data': {},
                     'onsuccess': callbacks["success"],
                     'onerror': callbacks["error"]
                 };
-            opt[catcherFieldName] = imgs;
+            if (catcherFieldName) {
+              opt.data[catcherFieldName] = imgs;
+            } else {
+              opt.data = imgs;
+            }
+            opt.data = imgs;
             ajax.request(url, opt);
         }
 

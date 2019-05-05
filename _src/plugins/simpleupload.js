@@ -60,12 +60,16 @@ UE.plugin.register('simpleupload', function (){
                 me.focus();
                 me.execCommand('inserthtml', '<img class="loadingclass" id="' + loadingId + '" src="' + me.options.themePath + me.options.theme +'/images/spacer.gif" title="' + (me.getLang('simpleupload.loading') || '') + '" >');
 
-                function callback(){
+                function callback(res){
                     try{
-                        var link, json, loader,
-                            body = (iframe.contentDocument || iframe.contentWindow.document).body,
+                        var link, json, loader,body,result;
+                        if (!res) {
+                            body = (iframe.contentDocument || iframe.contentWindow.document).body;
                             result = body.innerText || body.textContent || '';
-                        json = (new Function("return " + result))();
+                            json = (new Function("return " + result))();
+                        }else{
+                            json = res
+                        }
                         link = me.options.imageUrlPrefix + json.url;
                         if(json.state == 'SUCCESS' && json.url) {
                             loader = me.document.getElementById(loadingId);
@@ -79,6 +83,7 @@ UE.plugin.register('simpleupload', function (){
                             showErrorLoader && showErrorLoader(json.state);
                         }
                     }catch(er){
+                        console.error(er)
                         showErrorLoader && showErrorLoader(me.getLang('simpleupload.loadError'));
                     }
                     form.reset();

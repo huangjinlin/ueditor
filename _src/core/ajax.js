@@ -70,8 +70,14 @@ UE.ajax = function() {
             url = ajaxOptions.url;
         }
         if (!xhr || !url) return;
-        var ajaxOpts = ajaxOptions ? utils.extend(defaultAjaxOptions,ajaxOptions) : defaultAjaxOptions;
-
+        var ajaxOpts = defaultAjaxOptions;
+        if (ajaxOptions) {
+            if (ajaxOptions.headers) {
+                utils.extend(ajaxOptions.headers, defaultAjaxOptions.headers)
+            }
+            var opts = utils.extend({}, defaultAjaxOptions)
+            ajaxOpts = utils.extend(opts,ajaxOptions)
+        }
         var submitStr = json2str(ajaxOpts);  // { name:"Jim",city:"Beijing" } --> "name=Jim&city=Beijing"
         //如果用户直接通过data参数传递json对象过来，则也要将此json对象转化为字符串
         if (!utils.isEmptyObject(ajaxOpts.data)){
@@ -98,12 +104,19 @@ UE.ajax = function() {
                 }
             }
         };
-        for(var k in defaultAjaxOptions.headers){
-           xhr.setRequestHeader(k, defaultAjaxOptions.headers[k]);
+        for(var k in ajaxOpts.headers){
+           xhr.setRequestHeader(k, ajaxOpts.headers[k]);
         }
         if (method == "POST") {
-            xhr.setRequestHeader('Content-Type', 'application/x-www-form-urlencoded');
-            xhr.send(submitStr);
+            if(!ajaxOpts.headers['Content-Type']){
+              xhr.setRequestHeader('Content-Type', 'application/x-www-form-urlencoded');
+            }
+            console.log('ajaxOpts', ajaxOpts)
+            if(ajaxOpts.headers['Content-Type'] === 'application/json' && ajaxOpts.data){
+              xhr.send(JSON.stringify(ajaxOpts.data));
+            } else {
+              xhr.send(submitStr);
+            }
         } else {
             xhr.send(null);
         }

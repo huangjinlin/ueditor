@@ -5,7 +5,7 @@ Get Started
 
 UE.ajax增加defaultAjaxOptions属性,可以根据其headers属性对,request header赋值(_src\core\ajax.js)
 
-2.针对后端接口,上传本地图片和上传网络图片接口不同意,做以下改进:
+2.针对后端接口,上传本地图片和上传网络图片接口不同,做以下改进:
 
 config增加,uploadimageUrl,catchimageUrl
 
@@ -13,13 +13,18 @@ config增加,uploadimageUrl,catchimageUrl
 
 修改_src\plugins\simpleupload.js,用jquery提交表单
 
-4.针对构建dist目录,秀米无法继承,做以下改进:
+4.针对构建dist目录,无法集成秀米,做以下改进:
 
 切换tag为v1.4.3.3并且建立分支v1.4.3.3
 
 tip:提交分支的代码为:git push origin refs/heads/v1.4.3.3
 
-5.catchremoteimage支持headers设定'Content-Type'='application/json',并且catcherFieldName为undefined时直接传数组给后台
+5.catchremoteimage插件中,headers中Content-Type默认设定为application/json,并且config中catcherFieldName为undefined时直接传数组给后台
+
+6.针对上传图片成功后,没有通知content发送改变
+
+修改_src\plugins\simpleupload.js,在callback中增加`me.editor.fireEvent('contentchange');`
+
 
 ## ueditor富文本编辑器介绍
 
